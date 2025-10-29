@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desbloquear Mensaje de Amor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- Estilos Generales y Animación de Fondo --- */
+        body {
+            margin: 0;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #FF6B6B, #FF9A8B, #FF6B6B, #FF9A8B);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Estilo de la Tarjeta Principal --- */
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px 35px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.25);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+        }
+    
+        #secret-message p {
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .lock-icon {
+            width: 55px;
+            height: 55px;
+            margin-bottom: 20px;
+            fill: #fff;
+        }
+
+        h1 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+        
+        p {
+            margin-bottom: 28px;
+            font-size: 1rem;
+            opacity: 0.95;
+            line-height: 1.0;
+        }
+
+        /* --- Estilos del Formulario --- */
+        #password-form {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        #password-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 65px;
+            top: 0;
+            left: 0;
+            cursor: text;
+            z-index: 2;
+            border: none; background: transparent; color: transparent;
+        }
+        
+        #password-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+
+        .password-box {
+            width: 50px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .password-box span {
+            transition: all 0.2s ease;
+            line-height: 1;
+        }
+
+        .password-box.active {
+            border-color: #fff;
+            transform: scale(1.1);
+        }
+
+        .password-box.active span {
+            transform: scale(1.1);
+        }
+        
+        #hint-display {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fce4ec;
+            margin-top: 15px;
+        }
+
+        #hint-display span {
+            letter-spacing: 8px;
+            font-family: monospace;
+        }
+
+        #submit-button {
+            background-color: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        #submit-button:hover {
+            background-color: #FF5A5A;
+            transform: scale(1.03);
+        }
+        
+        #submit-button:active {
+            transform: scale(0.98);
+        }
+
+        #error-message {
+            color: #fce4ec;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .shake {
+            animation: shake-horizontal 0.6s cubic-bezier(.455,.030,.515,.955) both;
+        }
+        @keyframes shake-horizontal {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+        #secret-message {
+            animation: fade-in-up 0.7s ease-out forwards;
+            padding-top: 10px;
+        }
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 2rem;
+            color: #FF6B6B;
+            animation: float-heart 5s ease-out forwards;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transform: translateY(0) scale(0);
+        }
+        
+        @keyframes float-heart {
+            0% { opacity: 0; transform: translateY(0) scale(0); }
+            20% { opacity: 1; transform: translateY(-20px) scale(1); }
+            100% { opacity: 0; transform: translateY(-200px) scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="password-section">
+            <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 1.5A5.25 5.25 0 006.75 6.75v3.75H6a2.25 2.25 0 00-2.25 2.25v8.25A2.25 2.25 0 006 23.25h12a2.25 2.25 0 002.25-2.25v-8.25a2.25 2.25 0 00-2.25-2.25h-.75V6.75A5.25 5.25 0 0012 1.5zM8.25 6.75a3.75 3.75 0 017.5 0v3.75H8.25V6.75z"></path>
+            </svg>
+            <h1>Las palabras de las flores</h1>
+            <p>Ingresa la contraseña para descubrirlo.</p>
+            <p>(Es como te digo de cariño)</p>
+            <form id="password-form">
+                <input type="password" id="password-input" maxlength="4" autocomplete="off" required>
+                <div id="password-boxes">
+                    <div class="password-box"><span></span></div>
+                    <div class="password-box"><span></span></div>
+                    <div class="password-box"><span></span></div>
+                    <div class="password-box"><span></span></div>
+                </div>
+                <button type="submit" id="submit-button">Desbloquear</button>
+            </form>
+            <p id="error-message" class="hidden">Contraseña incorrecta. Vamos daniela por dios</p>
+            <p id="hint-display" class="hidden">Pista: <span>_ _ _ _</span></p>
+        </div>
+
+        <div id="secret-message" class="hidden">
+            <h1>...</h1>
+            <p>Han pasado 17 días y no te imaginas lo que te pienso y te extraño.</p>
+            <p>Le mando estas flores a la mujer que no sale de mi cabeza.</p>
+            <p>Victor</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Lógica de la Página ---
+
+        const CORRECT_PASSWORD = "neni"; // Contraseña de 4 letras
+
+        const passwordForm = document.getElementById('password-form');
+        const passwordInput = document.getElementById('password-input');
+        const errorMessage = document.getElementById('error-message');
+        const passwordSection = document.getElementById('password-section');
+        const secretMessageSection = document.getElementById('secret-message');
+        const container = document.querySelector('.container');
+        const passwordBoxes = document.querySelectorAll('.password-box');
+        const hintDisplay = document.getElementById('hint-display');
+        const hintText = hintDisplay.querySelector('span');
+
+        let failedAttempts = 0;
+
+        function checkPassword(event) {
+            event.preventDefault(); 
+            const enteredPassword = passwordInput.value;
+
+            if (enteredPassword.toLowerCase() === CORRECT_PASSWORD.toLowerCase()) {
+                passwordSection.style.display = 'none';
+                secretMessageSection.classList.remove('hidden');
+                startHeartRain(); 
+            } else {
+                failedAttempts++;
+                revealHint(); 
+
+                container.classList.add('shake');
+                errorMessage.classList.remove('hidden');
+                
+                passwordInput.value = ""; 
+                passwordBoxes.forEach(box => {
+                    box.classList.remove('active');
+                    box.querySelector('span').textContent = '';
+                });
+                passwordInput.focus();
+
+                setTimeout(() => {
+                    container.classList.remove('shake');
+                }, 600);
+            }
+        }
+
+        passwordForm.addEventListener('submit', checkPassword);
+
+        // --- FUNCIONALIDAD DE CORAZONES ---
+        function createHeart() {
+            const heart = document.createElement('span');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.bottom = '-20px';
+            heart.style.fontSize = Math.random() * 1.5 + 1.5 + 'rem';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(heart);
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+
+        let heartInterval;
+        function startHeartRain() {
+            heartInterval = setInterval(createHeart, 200);
+            setTimeout(() => {
+                clearInterval(heartInterval);
+            }, 10000);
+        }
+
+        // --- LÓGICA PARA VISUALIZACIÓN Y PISTAS ---
+        function syncInputUI() {
+            const value = passwordInput.value;
+            passwordBoxes.forEach((box, index) => {
+                const span = box.querySelector('span');
+                if (index < value.length) {
+                    span.textContent = value[index];
+                    box.classList.add('active');
+                } else {
+                    span.textContent = '';
+                    box.classList.remove('active');
+                }
+            });
+        }
+        
+        // ★★★ CÓDIGO MODIFICADO: Lógica de pistas personalizada ★★★
+        function revealHint() {
+            hintDisplay.classList.remove('hidden');
+            let hintArray = ['_', '_', '_', '_'];
+
+            // Primer intento fallido: revela la ÚLTIMA letra.
+            if (failedAttempts >= 1) {
+                hintArray[3] = CORRECT_PASSWORD[3];
+            }
+
+            // Segundo intento fallido (o más): revela también la PRIMERA letra.
+            if (failedAttempts >= 2) {
+                hintArray[0] = CORRECT_PASSWORD[0];
+            }
+
+            hintText.textContent = hintArray.join(' ');
+        }
+
+        passwordInput.addEventListener('input', syncInputUI);
+    </script>
+
+</body>
+</html>
