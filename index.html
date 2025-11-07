@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* --- Estilos Generales y Animación de Fondo --- */
+        /* --- Estilos Generales y Animación de Fondo ORIGINAL --- */
         body {
             margin: 0;
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -17,12 +17,27 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            /* Se mantiene el fondo de gradiente original mientras está bloqueado */
             background: linear-gradient(45deg, #FF6B6B, #FF9A8B, #FF6B6B, #FF9A8B);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             overflow: hidden;
+            /* Transición suave para cuando la imagen de fondo cambie */
+            transition: background 1s ease-out; 
         }
 
+        /* 🖼️ NUEVO ESTILO: Se agrega una clase para el fondo con imagen */
+        .unlocked-background {
+            /* 🛑🛑🛑 REEMPLAZA 'nombre_de_tu_foto.jpg' CON EL NOMBRE DE TU ARCHIVO DE IMAGEN (ej: 'novios.png') 🛑🛑🛑 */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(fotofondo.jpg);
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            /* Se detiene la animación del gradiente al desbloquear */
+            animation: none; 
+            background-color: transparent; /* Asegura que el color de la imagen se vea */
+        }
+        
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -45,7 +60,7 @@
             position: relative;
             z-index: 1;
         }
-    
+        
         #secret-message p {
             margin-bottom: 12px;
             line-height: 1.4;
@@ -236,8 +251,11 @@
 
         <div id="secret-message" class="hidden">
             <h1>...</h1>
-            <p>Han pasado 17 días y no te imaginas lo que te pienso y te extraño.</p>
-            <p>Le mando estas flores a la mujer que no sale de mi cabeza.</p>
+            <p>Dani, hoy que es tu día simplemente quiero recordarte que eres una mujer increíble, fuerte y resiliente. No te imaginas lo que te admiro y te valoro, me siento orgulloso de decir que eres la mujer de mis sueños.</p>
+            <p>Eres la mujer que no sale de mi cabeza, que siempre estoy pensando, así esté en algo importante.</p>
+	    <p>Quiero aprovechar de decirte que no hay forma que mi corazón te olvide, un espacio de mi corazón lo tienes tú por el resto de mi vida. Como un día te dije, eres la mujer por la cual yo bajaría la luna.</p>
+	    <p>En verdad no sé que nos depare el futuro, pero soy feliz si lo comparto contigo. Feliz cumpleaños mi amor, verás que todas tus metas y tus ambiciones las vas a lograr, confío mucho en eso.</p>
+	    <p>Te amo.</p>
             <p>Victor</p>
         </div>
     </div>
@@ -246,6 +264,8 @@
         // --- Lógica de la Página ---
 
         const CORRECT_PASSWORD = "neni"; // Contraseña de 4 letras
+        // 🌟 Referencia al body para cambiar el fondo
+        const body = document.body; 
 
         const passwordForm = document.getElementById('password-form');
         const passwordInput = document.getElementById('password-input');
@@ -264,6 +284,9 @@
             const enteredPassword = passwordInput.value;
 
             if (enteredPassword.toLowerCase() === CORRECT_PASSWORD.toLowerCase()) {
+                // 🖼️ CAMBIO CLAVE: Agrega la clase de fondo de imagen aquí
+                body.classList.add('unlocked-background');
+
                 passwordSection.style.display = 'none';
                 secretMessageSection.classList.remove('hidden');
                 startHeartRain(); 
@@ -289,7 +312,7 @@
 
         passwordForm.addEventListener('submit', checkPassword);
 
-        // --- FUNCIONALIDAD DE CORAZONES ---
+        // --- FUNCIONALIDAD DE CORAZONES (Se mantiene igual) ---
         function createHeart() {
             const heart = document.createElement('span');
             heart.classList.add('heart');
@@ -313,7 +336,7 @@
             }, 10000);
         }
 
-        // --- LÓGICA PARA VISUALIZACIÓN Y PISTAS ---
+        // --- LÓGICA PARA VISUALIZACIÓN Y PISTAS (Se mantiene igual) ---
         function syncInputUI() {
             const value = passwordInput.value;
             passwordBoxes.forEach((box, index) => {
@@ -328,7 +351,6 @@
             });
         }
         
-        // ★★★ CÓDIGO MODIFICADO: Lógica de pistas personalizada ★★★
         function revealHint() {
             hintDisplay.classList.remove('hidden');
             let hintArray = ['_', '_', '_', '_'];
@@ -351,5 +373,4 @@
 
 </body>
 </html>
-
 
